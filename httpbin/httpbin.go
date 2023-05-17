@@ -79,6 +79,8 @@ var _ http.Handler = &HTTPBin{}
 func (h *HTTPBin) Handler() http.Handler {
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("/endpoint", methods(h.Endpoint, "GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS", "TRACE"))
+
 	mux.HandleFunc("/", methods(h.Index, "GET"))
 	mux.HandleFunc("/forms/post", methods(h.FormsPost, "GET"))
 	mux.HandleFunc("/encoding/utf8", methods(h.UTF8, "GET"))

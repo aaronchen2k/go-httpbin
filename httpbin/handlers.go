@@ -43,10 +43,51 @@ func (h *HTTPBin) UTF8(w http.ResponseWriter, r *http.Request) {
 }
 
 // Get handles HTTP GET requests
+func (h *HTTPBin) Endpoint(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		h.Get(w, r)
+	} else if r.Method == "POST" {
+		h.RequestWithBody(w, r)
+	} else if r.Method == "PUT" {
+		h.RequestWithBody(w, r)
+	} else if r.Method == "PATCH" {
+		h.RequestWithBody(w, r)
+	} else if r.Method == "DELETE" {
+		h.RequestWithBody(w, r)
+	} else if r.Method == "HEAD" {
+		h.Get(w, r)
+	} else if r.Method == "OPTIONS" {
+		h.Options(w, r)
+	} else if r.Method == "TRACE" {
+		h.Trace(w, r)
+	}
+}
+
+// Get handles HTTP GET requests
 func (h *HTTPBin) Get(w http.ResponseWriter, r *http.Request) {
 	writeJSON(http.StatusOK, w, &noBodyResponse{
 		Args:    r.URL.Query(),
 		Headers: getRequestHeaders(r),
+		Origin:  getClientIP(r),
+		URL:     getURL(r).String(),
+	})
+}
+
+// Get handles HTTP OPTIONS requests
+func (h *HTTPBin) Options(w http.ResponseWriter, r *http.Request) {
+	writeJSON(http.StatusOK, w, &noBodyResponse{
+		Args:    r.URL.Query(),
+		Headers: getRequestHeadersForOptions(r),
+		Origin:  getClientIP(r),
+		URL:     getURL(r).String(),
+	})
+}
+
+// Get handles HTTP TRACE requests
+func (h *HTTPBin) Trace(w http.ResponseWriter, r *http.Request) {
+	writeJSON(http.StatusOK, w, &noBodyResponse{
+		Args:    r.URL.Query(),
+		Headers: getRequestHeadersForTrace(r),
 		Origin:  getClientIP(r),
 		URL:     getURL(r).String(),
 	})

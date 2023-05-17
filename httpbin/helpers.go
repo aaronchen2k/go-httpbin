@@ -31,6 +31,20 @@ func getRequestHeaders(r *http.Request) http.Header {
 	h.Set("Host", r.Host)
 	return h
 }
+func getRequestHeadersForOptions(r *http.Request) http.Header {
+	h := r.Header
+	h.Set("Server", r.Host)
+	h.Set("Allow", "GET, POST, PUT, DELETE, PATCH, HEAD, CONNECT, OPTIONS, TRACE")
+	h.Set("Content-Type", "httpd/unix-directory")
+	return h
+}
+func getRequestHeadersForTrace(r *http.Request) http.Header {
+	h := r.Header
+	h.Set("Server", r.Host)
+	h.Set("Host", r.Host)
+	h.Set("Connection", "close")
+	return h
+}
 
 // getClientIP tries to get a reasonable value for the IP address of the
 // client making the request. Note that this value will likely be trivial to
