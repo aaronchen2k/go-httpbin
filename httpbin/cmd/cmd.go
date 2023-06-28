@@ -21,7 +21,7 @@ import (
 
 const (
 	defaultListenHost = "0.0.0.0"
-	defaultListenPort = 50300
+	defaultListenPort = 9000
 
 	// Reasonable defaults for our http server
 	srvReadTimeout       = 5 * time.Second
